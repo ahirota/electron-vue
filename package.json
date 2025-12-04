@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
-    "dev":"npm-run-all --parallel dev:vue dev:electron",
+    "dev": "npm-run-all --parallel dev:vue dev:electron",
     "dev:vue": "vite",
     "dev:electron": "npm run transpile:electron; NODE_ENV=development electron .",
     "build": "vue-tsc -b && vite build",
@@ -16,10 +16,12 @@
     "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
   },
   "dependencies": {
+    "os-utils": "^0.0.14",
     "vue": "^3.5.24"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
+    "@types/os-utils": "^0.0.4",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
     "cross-env": "^10.1.0",
