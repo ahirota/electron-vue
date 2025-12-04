@@ -4,6 +4,9 @@ import { ref } from 'vue'
 defineProps<{ msg: string }>()
 
 const count = ref(0)
+
+// @ts-ignore
+window.electron.getStaticData();
 </script>
 
 <template>

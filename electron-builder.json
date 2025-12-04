@@ -1,6 +1,7 @@
 {
     "appId":"com.neinhearted.electron-vue",
     "files": ["dist-electron", "dist-vue"],
+    "extraResources": ["dist-electron/preload.cjs"],
     "icon": "./Scroll_of_Wisdom.png",
     "mac": {
         "target": "dmg"
