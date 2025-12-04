@@ -2,6 +2,15 @@
 import HelloWorld from './components/HelloWorld.vue';
 </script>
 
+<script lang="ts">
+import { watchEffect } from 'vue';
+// Is this correct? Maybe not. 
+watchEffect(() => {
+  // @ts-ignore
+  window.electron.subscribeStatistics(stats => console.log(stats));
+});
+</script>
+
 <template>
   <div>
     <a href="https://vuejs.org/" target="_blank">
