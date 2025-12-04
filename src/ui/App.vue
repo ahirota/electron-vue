@@ -6,7 +6,6 @@ import HelloWorld from './components/HelloWorld.vue';
 import { watchEffect } from 'vue';
 // Is this correct? Maybe not. 
 watchEffect(() => {
-  // @ts-ignore
   window.electron.subscribeStatistics(stats => console.log(stats));
 });
 </script>
