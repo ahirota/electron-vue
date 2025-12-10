@@ -3,6 +3,7 @@ import path from 'path';
 import {ipcHandle, isDev} from './util.js';
 import { pollResources, getStaticData } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
+import { watchLog } from './logReader.js';
 
 app.on('ready', () => {
     const mainWindow = new BrowserWindow({
@@ -15,6 +16,8 @@ app.on('ready', () => {
     } else {
         mainWindow.loadFile(path.join(app.getAppPath(), '/dist-vue/index.html'));
     }
+
+    watchLog();
 
     pollResources(mainWindow);
 
