@@ -17,7 +17,7 @@ app.on('ready', () => {
         mainWindow.loadFile(path.join(app.getAppPath(), '/dist-vue/index.html'));
     }
 
-    watchLog();
+    // watchLog();
 
     pollResources(mainWindow);
 

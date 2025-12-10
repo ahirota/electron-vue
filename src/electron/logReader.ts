@@ -1,10 +1,6 @@
-import osUtils from 'os-utils';
-import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import {app} from 'electron';
-import { BrowserWindow } from 'electron';
-import { ipcWebContentsSend } from './util.js';
 import readLastLines from 'read-last-lines';
 
 export function watchLog() {
