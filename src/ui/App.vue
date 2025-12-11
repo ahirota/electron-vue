@@ -6,7 +6,8 @@ import HelloWorld from './components/HelloWorld.vue';
 import { watchEffect } from 'vue';
 // Is this correct? Maybe not. 
 watchEffect(() => {
-  window.electron.subscribeStatistics(stats => console.log(stats));
+  const unsub = window.electron.subscribeStatistics(stats => console.log(stats));
+  return unsub;
 });
 </script>
 
