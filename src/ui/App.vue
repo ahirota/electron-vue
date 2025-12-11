@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue';
+import ResourceChart from './components/ResourceChart.vue';
 </script>
 
 <script lang="ts">
@@ -17,6 +18,7 @@ watchEffect(() => {
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
+  <ResourceChart/>
   <HelloWorld msg="Vite + Vue" />
 </template>
 
