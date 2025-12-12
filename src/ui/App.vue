@@ -3,15 +3,6 @@ import HelloWorld from './components/HelloWorld.vue';
 import ResourceChart from './components/ResourceChart.vue';
 </script>
 
-<script lang="ts">
-import { watchEffect } from 'vue';
-// Is this correct? Maybe not. 
-watchEffect(() => {
-  const unsub = window.electron.subscribeStatistics(stats => console.log(stats));
-  return unsub;
-});
-</script>
-
 <template>
   <div>
     <a href="https://vuejs.org/" target="_blank">
