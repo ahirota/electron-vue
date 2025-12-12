@@ -1,9 +1,11 @@
-import {app, BrowserWindow, ipcMain} from 'electron';
+import {app, BrowserWindow, ipcMain, Menu, Tray} from 'electron';
 import path from 'path';
 import {ipcHandle, isDev} from './util.js';
 import { pollResources, getStaticData } from './resourceManager.js';
-import { getPreloadPath, getUIPath } from './pathResolver.js';
+import { getAssetPath, getPreloadPath, getUIPath } from './pathResolver.js';
 import { watchLog } from './logReader.js';
+import { createTray } from './tray.js';
+import { createMenu } from './menu.js';
 
 app.on('ready', () => {
     const mainWindow = new BrowserWindow({
@@ -21,7 +23,36 @@ app.on('ready', () => {
 
     pollResources(mainWindow);
 
-    ipcHandle("getStaticData", () => {
+    ipcHandle('getStaticData', () => {
         return getStaticData();
     });
+
+    createTray(mainWindow);
+    handleCloseEvents(mainWindow);
+    createMenu(mainWindow);
 });
+
+
+// Check if Main Window was closed and then before-quit-event happened
+function handleCloseEvents(mainWindow: BrowserWindow) {
+    let willClose = false;
+
+    mainWindow.on('close', (e) => {
+        if (willClose) {
+            return;
+        }
+        e.preventDefault();
+        mainWindow.hide();
+        if (app.dock) {
+            app.dock.hide();
+        }
+    });
+
+    app.on('before-quit', () => {
+        willClose = true;
+    });
+
+    mainWindow.on('show', () => {
+        willClose = false;
+    });
+}
