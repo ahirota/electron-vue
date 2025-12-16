@@ -18,9 +18,6 @@ const maximizeWindow = () => window.electron.sendFrameAction('MAXIMIZE');
 
 <style lang="scss" scoped>
 #header-wrap {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     text-align: right;
     padding: 0.5rem;
