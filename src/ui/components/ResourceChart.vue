@@ -98,9 +98,9 @@ const chartOptions = ref({
 
 // Watch the stats ref and update the chart data
 watch(chartStatisticsData, (newVal) => {
-  const cpu = newVal.map(s => s.cpuUsage * 100);
-  const ram = newVal.map(s => s.ramUsage * 100);
-  const storage = newVal.map(s => s.storageUsage * 100);
+  const cpu = newVal.map((s: Statistics) => s.cpuUsage * 100);
+  const ram = newVal.map((s: Statistics) => s.ramUsage * 100);
+  const storage = newVal.map((s: Statistics) => s.storageUsage * 100);
 
   // Replace the entire data object to trigger vue-chartjs reactivity
   chartData.value = {
