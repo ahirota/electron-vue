@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import AppHeader from './components/AppHeader.vue';
-import ResourceChart from './components/ResourceChart.vue';
-import StaticData from './components/StaticData.vue';
+import UsageDashboard from './components/UsageDashboard.vue';
 </script>
 
 <template>
-  <AppHeader/>
-  <div>
-    <div></div>
-    <div class="mainStats">
-      <StaticData/>
-      <ResourceChart/>
-    </div>
+  <div class="">
+    <UsageDashboard />
   </div>
 </template>
 

@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import StaticDataToggle from './StaticDataToggle.vue';
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale, Filler } from 'chart.js';
 
 ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale, Filler);
 
-const dataPointCount: number = 10;
+// Data Listeners
 const dataListener = ref<UnsubscribeFunction | null>(null);
 const viewListener = ref<UnsubscribeFunction | null>(null);
 
-// Use a ref for the array so we can mutate it (push/shift) and keep reactivity
-const chartStatisticsData = ref<Statistics[]>([]);
+// Chart 
 const activeView = ref<String>("CPU")
-
+const dataPointCount: number = 10;
+const chartStatisticsData = ref<Statistics[]>([]);
 const tickFormatter = (value: number | string): string => {return (Math.round(Number(value) * 100) / 100).toString() + '%'};
-
 const chartData = ref({
   labels: [5,4.5,4,3.5,3,2.5,2,1.5,1,0.5],
   datasets: [
@@ -23,8 +23,8 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#36a2eb',
-          backgroundColor: '#36a2eb',
+          borderColor: '#ea00d9',
+          backgroundColor: '#ea00d9',
           borderWidth: 3,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
@@ -35,8 +35,8 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#ff6384',
-          backgroundColor: '#ff6384',
+          borderColor: '#05d9e8',
+          backgroundColor: '#05d9e8',
           borderWidth: 3,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
@@ -47,8 +47,8 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#ffcd56',
-          backgroundColor: '#ffcd56',
+          borderColor: '#fee801',
+          backgroundColor: '#fee801',
           borderWidth: 3,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
@@ -73,9 +73,14 @@ const chartOptions = ref({
         display: false
       },
       ticks: {
+        color: '#fff',
         display: true,
-        callback: tickFormatter
-      }
+        callback: tickFormatter,
+        font: {
+          family: 'Orbitron'
+        }
+      },
+      suggestedMin: 0
     }
   },
   plugins: {
@@ -87,13 +92,19 @@ const chartOptions = ref({
     },
     legend: {
       display: false
-    },
-    title: {
-      display: true,
-      text: 'CPU Usage'
     }
   }
 });
+
+// Static Data Refs
+const totalStorage = ref<number>();
+const cpuModel = ref<string>();
+const totalMemoryGB = ref<number>();
+
+// Toggle Active View Manually
+const toggleView = (view: View): void => {
+  activeView.value = view;
+};
 
 // Watch the stats ref and update the chart data
 watch(chartStatisticsData, (newVal) => {
@@ -117,16 +128,7 @@ watch(activeView, (newVal) => {
   const ramView = newVal != 'RAM';
   const storageView = newVal != 'STORAGE';
 
-  const updatedTitle = `${newVal} USAGE`;
-
   // Replace the entire data object to trigger vue-chartjs reactivity
-  chartOptions.value = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {...chartOptions.value.scales},
-    plugins: {...chartOptions.value.plugins, title: {display: true, text: updatedTitle}}
-  };
-
   chartData.value = {
     labels: chartData.value.labels,
     datasets: [
@@ -137,7 +139,8 @@ watch(activeView, (newVal) => {
   };
 }, { deep: true });
 
-onMounted(() => {
+// On Mount, Fetch All Data
+onMounted(async () => {
   dataListener.value = window.electron.subscribeStatistics((stats) => {
     // mutate the ref in-place so Vue reactivity remains intact
     chartStatisticsData.value.push(stats);
@@ -149,6 +152,11 @@ onMounted(() => {
   viewListener.value = window.electron.subscribeChangeView((view) => {
     activeView.value = view;
   });
+
+  const staticData = await window.electron.getStaticData();
+  totalStorage.value = staticData.totalStorage;
+  cpuModel.value = staticData.cpuModel;
+  totalMemoryGB.value = staticData.totalMemoryGB;
 });
 
 onBeforeUnmount(() => {
@@ -159,14 +167,17 @@ onBeforeUnmount(() => {
     viewListener.value();
   }
 });
-
 </script>
 
-<style scoped>
-</style>
-
 <template>
-    <div>
-        <Line :data="chartData" :options="chartOptions"></Line>
+    <div class="">
+        <div id="dataToggles" class="flex flex-row">
+            <StaticDataToggle @toggle="toggleView" title="CPU" :subtitle="cpuModel" :current-usage="chartStatisticsData.map((s: Statistics) => s.cpuUsage * 100)" :is-active="activeView == 'CPU'" />
+            <StaticDataToggle @toggle="toggleView" title="RAM" :subtitle="totalMemoryGB" :current-usage="chartStatisticsData.map((s: Statistics) => s.ramUsage * 100)" :is-active="activeView == 'RAM'" />
+            <StaticDataToggle @toggle="toggleView" title="STORAGE" :subtitle="totalStorage" :current-usage="chartStatisticsData.map((s: Statistics) => s.storageUsage * 100)" :is-active="activeView == 'STORAGE'" />
+        </div>
+        <div id="usageGraph" class="flex flex-row">
+            <Line :data="chartData" :options="chartOptions"></Line>
+        </div>
     </div>
 </template>

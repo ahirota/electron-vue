@@ -1,4 +1,4 @@
-import {app, BrowserWindow, ipcMain, Menu, Tray} from 'electron';
+import {app, BrowserWindow, ipcMain, Menu, Tray, globalShortcut, dialog} from 'electron';
 import path from 'path';
 import { ipcHandle, isDev, ipcMainOn} from './util.js';
 import { pollResources, getStaticData } from './resourceManager.js';
@@ -12,7 +12,6 @@ app.on('ready', () => {
         webPreferences: {
             preload: getPreloadPath(),
         },
-        frame: false
     });
     if (isDev()) {
         mainWindow.loadURL('http://localhost:5123/');
@@ -48,6 +47,13 @@ app.on('ready', () => {
     createTray(mainWindow);
     handleCloseEvents(mainWindow);
     createMenu(mainWindow);
+    
+    
+    // globalShortcut.register('CommandOrControl+Alt+R', () => {
+    //     console.log('Global shortcut triggered!');
+    //     dialog.showMessageBox({ message: 'Shortcut Pressed!' });
+    // });
+    // console.log(globalShortcut.isRegistered('CommandOrControl+Alt+R'));
 });
 
 
@@ -73,4 +79,8 @@ function handleCloseEvents(mainWindow: BrowserWindow) {
     mainWindow.on('show', () => {
         willClose = false;
     });
+
+    // app.on('will-quit', () => {
+    //     globalShortcut.unregisterAll();
+    // });
 }
