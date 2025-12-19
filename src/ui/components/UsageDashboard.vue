@@ -23,9 +23,9 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#ea00d9',
-          backgroundColor: '#ea00d9',
-          borderWidth: 3,
+          borderColor: '#5ef7ff',
+          backgroundColor: '#5ef7ff',
+          borderWidth: 1,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
           hidden: false
@@ -35,9 +35,9 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#05d9e8',
-          backgroundColor: '#05d9e8',
-          borderWidth: 3,
+          borderColor: '#5ef7ff',
+          backgroundColor: '#5ef7ff',
+          borderWidth: 1,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
           hidden: true
@@ -47,9 +47,9 @@ const chartData = ref({
           data: [] as number[],
           fill: false,
           pointStyle: false as const,
-          borderColor: '#fee801',
-          backgroundColor: '#fee801',
-          borderWidth: 3,
+          borderColor: '#5ef7ff',
+          backgroundColor: '#5ef7ff',
+          borderWidth: 1,
           borderJoinStyle: 'round' as const,
           tension: 0.1,
           hidden: true
@@ -59,10 +59,14 @@ const chartData = ref({
 const chartOptions = ref({
   responsive: true,
   maintainAspectRatio: false,
+  aspectRatio: 2 | 1,
   scales: {
     x: {
       grid: {
         display: false
+      },
+      border: {
+        color: '#a63734',
       },
       ticks: {
         display: false
@@ -72,8 +76,11 @@ const chartOptions = ref({
       grid: {
         display: false
       },
+      border: {
+        color: '#a63734',
+      },
       ticks: {
-        color: '#fff',
+        color: '#a63734',
         display: true,
         callback: tickFormatter,
         font: {
@@ -170,13 +177,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="">
-        <div id="dataToggles" class="flex flex-row">
+    <div class="max-w-3xl mx-auto p-3">
+        <div id="dataToggles" class="grid grid-cols-3 justify-between gap-1">
             <StaticDataToggle @toggle="toggleView" title="CPU" :subtitle="cpuModel" :current-usage="chartStatisticsData.map((s: Statistics) => s.cpuUsage * 100)" :is-active="activeView == 'CPU'" />
             <StaticDataToggle @toggle="toggleView" title="RAM" :subtitle="totalMemoryGB" :current-usage="chartStatisticsData.map((s: Statistics) => s.ramUsage * 100)" :is-active="activeView == 'RAM'" />
             <StaticDataToggle @toggle="toggleView" title="STORAGE" :subtitle="totalStorage" :current-usage="chartStatisticsData.map((s: Statistics) => s.storageUsage * 100)" :is-active="activeView == 'STORAGE'" />
         </div>
-        <div id="usageGraph" class="flex flex-row">
+        <div id="usageGraph" class="mt-5 px-3 pb-3">
             <Line :data="chartData" :options="chartOptions"></Line>
         </div>
     </div>

@@ -44,18 +44,26 @@ const formattedSubtitle = computed(() => {
 </script>
 
 <style scoped>
-    
+.clip-corner-wrapper {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+.clip-corner {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
 </style>
 
 <template>
-    <div @click="$emit('toggle', title)" class="flex flex-col border-2 border-white rounded-md p-1" :class="isActive ? 'active' : ''">
-        <div class="flex flex-row">
-            <p>{{ title }}</p>
-            <p>{{ formattedSubtitle }}</p>
-        </div>
-        <div class="flex flex-row">
-            <p>Utilization Percentage</p>
-            <p>{{ lastUsage }}</p>
+    <div class="grid p-px bg-[#2c101a] clip-corner-wrapper" :class="isActive ? 'bg-[#942e2a]' : ''">
+        <div @click="$emit('toggle', title)" class="flex flex-col bg-[#13111e] py-1 px-2 justify-between clip-corner">
+            <div class="flex flex-col">
+                <p class="text-xs">{{ title }}</p>
+                <p class="text-base">{{ formattedSubtitle }}</p>
+            </div>
+            <div class="flex flex-row justify-between mt-3">
+                <p class="text-xl">USAGE:</p>
+                <p class="text-xl mr-3">{{ lastUsage }}</p>
+            </div>
         </div>
     </div>
 </template>

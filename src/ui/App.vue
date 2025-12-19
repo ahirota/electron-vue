@@ -3,7 +3,7 @@ import UsageDashboard from './components/UsageDashboard.vue';
 </script>
 
 <template>
-  <div class="">
+  <div class="bg-linear-to-b from-[#38151b] to-[#080c15]">
     <UsageDashboard />
   </div>
 </template>
