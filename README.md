@@ -27,9 +27,11 @@ If you'd like to build some binary executables for yourself please run one of th
 ### Downloads
 Alternatively you can download and run these programs here:
 
-[Windows EXE]()
-[Windows MSI]()
-[Linux AppImage]()
+[Windows EXE](https://github.com/ahirota/electron-vue/releases/download/v0.0.1-alpha/electron-vue-v0.0.1-alpha.exe)
+[Windows MSI](https://github.com/ahirota/electron-vue/releases/download/v0.0.1-alpha/electron-vue-v0.0.1-alpha.msi)
+[Linux AppImage](https://github.com/ahirota/electron-vue/releases/download/v0.0.1-alpha/electron-vue-v0.0.1-alpha.AppImage)
+
+*The app is unsigned, which means you'll have to bypass security warnings on Windows to open it.
 
 ## Tool Acknowlegements
 ### Vue 3 + TypeScript + Vite (This is a )
