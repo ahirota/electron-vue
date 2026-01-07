@@ -31,3 +31,7 @@ dist-electron
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Vitepress
+docs/.vitepress/dist
+docs/.vitepress/cache
